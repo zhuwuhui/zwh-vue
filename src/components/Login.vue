@@ -31,20 +31,25 @@
     },
     methods: {
       login () {
-        this.$axios
-          .post('/login', {
-            userName: this.loginForm.userName,
-            password: this.loginForm.password
-          })
-          .then(successResponse => {
-            if (successResponse.data.code === 200) {
-              this.$router.replace({path: '/index'})
-            }
-          })
-            // eslint-disable-next-line no-unused-vars
-          .catch(failResponse => {
-          })
-      }
+          var _this = this
+          console.log(this.$store.state)
+          this.$axios
+            .post('/login', {
+              userName: this.loginForm.userName,
+              password: this.loginForm.password
+            })
+            .then(successResponse => {
+              if (successResponse.data.code === 200) {
+                // var data = this.loginForm
+                _this.$store.commit('login', _this.loginForm)
+                var path = this.$route.query.redirect
+                this.$router.replace({path: path === '/' || path === undefined ? '/index' : path})
+              }
+            })
+              // eslint-disable-next-line no-unused-vars
+            .catch(failResponse => {
+            })
+        }
     }
   }
 </script>
